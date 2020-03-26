@@ -51,7 +51,7 @@ model.compile(optimizer='adam',
             loss=loss_fn,
             metrics=['accuracy'])
 
-model.fit(x_train, y_train, epochs=5, callbacks=[metadataCallback])
+model.fit(x_train, y_train, epochs=2, callbacks=[metadataCallback])
 
 # Save our model to that the output as model.h5
 model.save(os.path.join(output_path, 'model.h5'))
