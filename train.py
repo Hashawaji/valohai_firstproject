@@ -1,8 +1,21 @@
 import tensorflow as tf
+import os
+import numpy
 
-mnist = tf.keras.datasets.mnist
+# Get the path to the folder where Valohai inputs are
+input_path = os.getenv('VH_INPUTS_DIR')
 
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
+# Get the output path from the Valohai machines environment variables
+output_path = os.getenv('VH_OUTPUTS_DIR')
+
+# Get the file path of our MNIST dataset that we defined in our YAML
+mnist_file_path = os.path.join(input_path, 'my-mnist-dataset/mnist.npz')
+
+# Load the file with numpy and set our train and test variables
+with numpy.load(mnist_file_path, allow_pickle=True) as f:
+    x_train, y_train = f['x_train'], f['y_train']
+    x_test, y_test = f['x_test'], f['y_test']
+
 x_train, x_test = x_train / 255.0, x_test / 255.0
 
 model = tf.keras.models.Sequential([
@@ -13,7 +26,6 @@ tf.keras.layers.Dense(10)
 ])
 
 predictions = model(x_train[:1]).numpy()
-predictions
 
 tf.nn.softmax(predictions).numpy()
 
@@ -26,3 +38,6 @@ model.compile(optimizer='adam',
             metrics=['accuracy'])
 
 model.fit(x_train, y_train, epochs=5)
+
+# Save our model to that the output as model.h5
+model.save(os.path.join(output_path, 'model.h5'))
