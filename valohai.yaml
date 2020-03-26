@@ -4,3 +4,6 @@
     name: Train MNIST model
     image: tensorflow/tensorflow:2.0.1-gpu-py3
     command: python train.py
+    inputs:
+        - name: my-mnist-dataset
+          default: https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
