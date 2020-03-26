@@ -1,6 +1,7 @@
 import tensorflow as tf
 import os
 import numpy
+import json
 
 # Get the path to the folder where Valohai inputs are
 input_path = os.getenv('VH_INPUTS_DIR')
@@ -10,6 +11,19 @@ output_path = os.getenv('VH_OUTPUTS_DIR')
 
 # Get the file path of our MNIST dataset that we defined in our YAML
 mnist_file_path = os.path.join(input_path, 'my-mnist-dataset/mnist.npz')
+
+# A function to write JSON to our output logs
+# with the epoch number with the loss and accuracy from each run.
+def logMetadata(epoch, logs):
+    print()
+    print(json.dumps({
+        'epoch': epoch,
+        'loss': str(logs['loss']),
+        'acc': str(logs['accuracy']),
+    }))
+
+# Setup a new Callback that will call logMetadata every time an epoch ends
+metadataCallback = tf.keras.callbacks.LambdaCallback(on_epoch_end=logMetadata)
 
 # Load the file with numpy and set our train and test variables
 with numpy.load(mnist_file_path, allow_pickle=True) as f:
@@ -37,7 +51,7 @@ model.compile(optimizer='adam',
             loss=loss_fn,
             metrics=['accuracy'])
 
-model.fit(x_train, y_train, epochs=5)
+model.fit(x_train, y_train, epochs=5, callbacks=[metadataCallback])
 
 # Save our model to that the output as model.h5
 model.save(os.path.join(output_path, 'model.h5'))
