@@ -26,3 +26,12 @@
         step: Train MNIST model
     edges:
       - [preprocess.output.*.npz, train.input.my-processed-mnist-dataset]
+- endpoint:
+    name: digit-predict
+    description: predict digits from image inputs
+    image: tensorflow/tensorflow:2.0.1-py3
+    wsgi: predict:mypredictor
+    files:
+        - name: model
+          description: Model output file from TensorFlow
+          path: model.h5
