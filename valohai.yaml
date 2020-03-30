@@ -4,3 +4,6 @@
     name: Train MNIST model
     image: tensorflow/tensorflow:2.0.1-gpu-py3
     command: python train.py
+    inputs:
+        - name: my-mnist-dataset
+          default: datum://01712b11-e1be-138c-579e-c0f95f41393f
