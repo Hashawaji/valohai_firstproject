@@ -7,7 +7,7 @@
       - python preprocess.py
     inputs:
       - name: my-raw-mnist-dataset
-        default: datum://01712b11-e1be-138c-579e-c0f95f41393f
+        default: datum://017a7ff6-2e97-a07f-024d-6cb456311ba0
 - step:
     name: Train MNIST model
     image: tensorflow/tensorflow:2.0.1-gpu-py3
