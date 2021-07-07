@@ -3,7 +3,7 @@
     name: Preprocess data
     image: python:3.6
     command:
-      - pip install numpy==1.18.1
+      - pip install numpy
       - python preprocess.py
     inputs:
       - name: my-raw-mnist-dataset
